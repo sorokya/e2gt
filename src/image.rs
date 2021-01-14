@@ -12,6 +12,14 @@ pub struct Image {
 }
 
 impl Image {
+    pub fn get_file_name(&self) -> String {
+        let mut file_name = String::with_capacity(20);
+        for byte in self.hash.iter() {
+            file_name.push_str(&(format!("{:#04x}", byte)[2..]));
+        }
+        file_name.push_str(".png");
+        file_name
+    }
     pub fn deserialize<R: Read>(buf: &mut R) -> Result<Self> {
         let mut hash: [u8; 8] = [0; 8];
         buf.read_exact(&mut hash)?;
@@ -59,15 +67,24 @@ mod tests {
         Ok(())
     }
 
-    fn get_image_buf() -> Result<Cursor<Vec<u8>>> {
-        let image = Image {
+    #[test]
+    fn file_name() {
+        let image = get_image();
+        assert_eq!(image.get_file_name(), "d4059da8a8fb5463.png");
+    }
+
+    fn get_image() -> Image {
+        Image {
             id: 2,
             hash: [0xD4, 0x05, 0x9D, 0xA8, 0xA8, 0xFB, 0x54, 0x63],
             x_offset: 5,
             width: 100,
             height: 200,
-        };
+        }
+    }
 
+    fn get_image_buf() -> Result<Cursor<Vec<u8>>> {
+        let image = get_image();
         Ok(Cursor::new(image.serialize()?))
     }
 }
