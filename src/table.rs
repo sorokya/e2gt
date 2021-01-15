@@ -18,7 +18,10 @@ impl Table {
         let number_of_images = buf.read_u16::<BigEndian>()?;
         let mut images: Vec<Image> = Vec::with_capacity(number_of_images.into());
         for _ in 0..number_of_images {
-            images.push(Image::deserialize(buf)?);
+            let image = Image::deserialize(buf)?;
+            if image.id > 0 {
+                images.push(image);
+            }
         }
 
         Ok(Self {
