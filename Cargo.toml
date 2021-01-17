@@ -4,7 +4,9 @@ version = "0.1.0"
 authors = ["Richard Leek <richard@richardleek.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+use_serde = ["serde"]
 
 [dependencies]
 byteorder = "1.4.2"
+serde = { version = "1.0", features = ["derive"], optional = true }

@@ -1,8 +1,12 @@
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
 use super::{Image, IMAGE_SIZE, TABLE_SIZE};
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use std::io::{Read, Result};
 
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Table {
     pub magic: [u8; 4],
     pub version: u16,
