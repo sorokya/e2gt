@@ -23,9 +23,7 @@ impl Table {
         let mut images: Vec<Image> = Vec::with_capacity(number_of_images.into());
         for _ in 0..number_of_images {
             let image = Image::deserialize(buf)?;
-            if image.id > 0 {
-                images.push(image);
-            }
+            images.push(image);
         }
 
         Ok(Self {
